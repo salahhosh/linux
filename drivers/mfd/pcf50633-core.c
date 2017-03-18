@@ -248,18 +248,18 @@ static int pcf50633_probe(struct i2c_client *client,
 		pdev->dev.parent = pcf->dev;
 		ret = platform_device_add_data(pdev, &pdata->reg_init_data[i],
 					       sizeof(pdata->reg_init_data[i]));
-		if (ret)
+		if (!ret)
 			goto err;
 
 		ret = platform_device_add(pdev);
-		if (ret)
+		if (!ret)
 			goto err;
 
 		pcf->regulator_pdev[i] = pdev;
 	}
 
 	ret = sysfs_create_group(&client->dev.kobj, &pcf_attr_group);
-	if (ret)
+	if (!ret)
 		dev_warn(pcf->dev, "error creating sysfs entries\n");
 
 	if (pdata->probe_done)
